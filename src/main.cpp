@@ -14,97 +14,92 @@
 
 #include "core/calc.h"
 
-using namespace std;
-
 class Value {
 public:
     enum class Type { INT, DOUBLE, STRING, BOOL };
 
 private:
     Type type;
-    variant<int, double, string, bool> data;
+    std::variant<int, double, std::string, bool> data;
 
 public:
     Value(int v) : type(Type::INT), data(v) {}
     Value(double v) : type(Type::DOUBLE), data(v) {}
-    Value(const string& v) : type(Type::STRING), data(v) {}
+    Value(const std::string& v) : type(Type::STRING), data(v) {}
     Value(bool v) : type(Type::BOOL), data(v) {}
     Value() : type(Type::INT), data(0) {}
 
     Type getType() const { return type; }
 
-    int asInt() const { return get<int>(data); }
-    double asDouble() const { return get<double>(data); }
-    const string& asString() const { return get<string>(data); }
-    bool asBool() const { return get<bool>(data); }
+    int asInt() const { return std::get<int>(data); }
+    double asDouble() const { return std::get<double>(data); }
+    const std::string& asString() const { return std::get<std::string>(data); }
+    bool asBool() const { return std::get<bool>(data); }
 };
 
-unordered_map<string, Value> variables;
+std::unordered_map<std::string, Value> variables;
 
-bool check_function(string line, string function_name) {
+bool check_function(std::string line, std::string function_name) {
     if ( line.starts_with(function_name + "(") && line.ends_with(")") ) return true;
 
     return false;
 }
 
-string function_content(string line, int name_length) {
+std::string function_content(std::string line, int name_length) {
     return line.substr(name_length + 1, line.length() - name_length - 2 );
 }
 
-string remove_qm(string text) {
+std::string remove_qm(std::string text) {
     return text.substr(1, text.length() - 2 );
 }
 
-void interpreter(string line) {
+void interpreter(std::string line) {
 
     if ( check_function(line, "output") ) {
 
-        string content = function_content(line, 6);
+        std::string content = function_content(line, 6);
 
         if ( content.starts_with('"') && content.ends_with('"') ) {
-            cout << content.substr(1, content.length() - 2 ) << endl;
+            std::cout << remove_qm( content ) << std::endl;
         } 
         else
         {
-
-            string type = content.substr( 0, content.find('@') );
-            string varName = content.substr( content.find('@') + 1 );
+            std::string type = content.substr( 0, content.find('@') );
+            std::string varName = content.substr( content.find('@') + 1 );
             
-            if ( type == "int" )            cout << variables[varName].asInt() << endl;
-            else if ( type == "string" )    cout << variables[varName].asString() << endl;
-            else cerr << "[ERROR] Nothing to output." << endl;
-
+            if ( type == "int" )            std::cout << variables[varName].asInt() << std::endl;
+            else if ( type == "string" )    std::cout << variables[varName].asString() << std::endl;
+            else std::cerr << "[ERROR] Nothing to output." << std::endl;
         }
 
     }
 
     if ( check_function(line, "shell") ) {
 
-        string content = function_content(line, 5);
+        std::string content = function_content(line, 5);
 
         if ( content.starts_with('"') && content.ends_with('"') ) {
-            string content01 = content.substr(1, content.length() - 2 );
-            const char* contentChar = content01.data();
+            const char* contentChar = remove_qm( content ).data();
 
             int result = system(contentChar);
 
-            cout << result << endl;
+            std::cout << result << std::endl;
         }
     }
 
     if ( line.starts_with("let") ) {
-        array<string, 2> types = {"int", "string"};
+        std::array<std::string, 2> types = {"int", "std::string"};
 
-        string lineStriped = line.substr(4);
+        std::string lineStriped = line.substr(4);
 
-        string type = lineStriped.substr(0, 0 + lineStriped.find(' ') );
+        std::string type = lineStriped.substr(0, 0 + lineStriped.find(' ') );
 
-        string content = lineStriped.substr(1 + type.length());
+        std::string content = lineStriped.substr(1 + type.length());
 
         size_t pos = content.find('=');
 
-        string key = content.substr(0, -1 + pos);
-        string value = content.substr(pos + 2);
+        std::string key = content.substr(0, -1 + pos);
+        std::string value = content.substr(pos + 2);
         
         if ( type == "int" ) {
             variables[key] = Value( calc(value) );
@@ -115,11 +110,11 @@ void interpreter(string line) {
 
     if ( check_function(line, "wait") ) {
 
-        string content = function_content(line, 4);
+        std::string content = function_content(line, 4);
 
         int contentInt = stoi(content);
 
-        this_thread::sleep_for(chrono::seconds(contentInt));
+        std::this_thread::sleep_for(std::chrono::seconds(contentInt));
 
     }
 
@@ -130,14 +125,14 @@ void interpreter(string line) {
 }
 
 int main( int argc, char* argv[] ) {
-    ifstream file( argv[1] );
+    std::ifstream file( argv[1] );
 
     if (!file.is_open()) {
-        cerr << "File not exist." << endl;
+        std::cerr << "File not exist." << std::endl;
         return 1;
     }
 
-    string line;
+    std::string line;
     bool main = false;
 
     while ( getline(file, line, ';') ) {
@@ -161,7 +156,7 @@ int main( int argc, char* argv[] ) {
             | std::views::drop_while([](unsigned char ch){ return std::isspace(ch); })
             | std::views::reverse;
 
-        string line(view.begin(), view.end());
+        std::string line(view.begin(), view.end());
 
 
 

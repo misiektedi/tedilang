@@ -1,5 +1,5 @@
 main {
-    let int test = 2 + 5 + 2;
+    let int test = 4/0;
 
     output(int@test);
 }
