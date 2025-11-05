@@ -45,6 +45,7 @@
         "print": "cpp",
         "sstream": "cpp",
         "complex": "cpp",
-        "memory": "cpp"
+        "memory": "cpp",
+        "span": "cpp"
     }
 }

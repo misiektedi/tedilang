@@ -1,9 +1,6 @@
 #include <iostream>
-#include <unordered_map>
 #include <fstream>
 #include <string>
-#include <cstdlib>
-#include <chrono>
 #include <thread>
 #include <array>
 #include <algorithm>
@@ -12,80 +9,13 @@
 #include <ranges>
 #include <cctype>
 
-#include "core/calc.h"
+#include "core/tedilang_helpers.hpp"
+#include "core/impl/calc.hpp"
 
-class Value {
-public:
-    enum class Type { INT, DOUBLE, STRING, BOOL };
-
-private:
-    Type type;
-    std::variant<int, double, std::string, bool> data;
-
-public:
-    Value(int v) : type(Type::INT), data(v) {}
-    Value(double v) : type(Type::DOUBLE), data(v) {}
-    Value(const std::string& v) : type(Type::STRING), data(v) {}
-    Value(bool v) : type(Type::BOOL), data(v) {}
-    Value() : type(Type::INT), data(0) {}
-
-    Type getType() const { return type; }
-
-    int asInt() const { return std::get<int>(data); }
-    double asDouble() const { return std::get<double>(data); }
-    const std::string& asString() const { return std::get<std::string>(data); }
-    bool asBool() const { return std::get<bool>(data); }
-};
-
-std::unordered_map<std::string, Value> variables;
-
-bool check_function(std::string line, std::string function_name) {
-    if ( line.starts_with(function_name + "(") && line.ends_with(")") ) return true;
-
-    return false;
-}
-
-std::string function_content(std::string line, int name_length) {
-    return line.substr(name_length + 1, line.length() - name_length - 2 );
-}
-
-std::string remove_qm(std::string text) {
-    return text.substr(1, text.length() - 2 );
-}
+#include "registry.hpp"
+#include "variables.hpp"
 
 void interpreter(std::string line) {
-
-    if ( check_function(line, "output") ) {
-
-        std::string content = function_content(line, 6);
-
-        if ( content.starts_with('"') && content.ends_with('"') ) {
-            std::cout << remove_qm( content ) << std::endl;
-        } 
-        else
-        {
-            std::string type = content.substr( 0, content.find('@') );
-            std::string varName = content.substr( content.find('@') + 1 );
-            
-            if ( type == "int" )            std::cout << variables[varName].asInt() << std::endl;
-            else if ( type == "string" )    std::cout << variables[varName].asString() << std::endl;
-            else std::cerr << "[ERROR] Nothing to output." << std::endl;
-        }
-
-    }
-
-    if ( check_function(line, "shell") ) {
-
-        std::string content = function_content(line, 5);
-
-        if ( content.starts_with('"') && content.ends_with('"') ) {
-            const char* contentChar = remove_qm( content ).data();
-
-            int result = system(contentChar);
-
-            std::cout << result << std::endl;
-        }
-    }
 
     if ( line.starts_with("let") ) {
         std::array<std::string, 2> types = {"int", "std::string"};
@@ -101,25 +31,12 @@ void interpreter(std::string line) {
         std::string key = content.substr(0, -1 + pos);
         std::string value = content.substr(pos + 2);
         
-        if ( type == "int" ) {
-            variables[key] = Value( calc(value) );
-        } else if ( type == "string" ) {
-            variables[key] = Value( remove_qm(value) );
-        }
+        if ( type == "int" ) Variables::instance().setInt( key, calc(value) );
+        else if ( type == "string" ) Variables::instance().setString( key, remove_qm(value) );
     }
 
-    if ( check_function(line, "wait") ) {
-
-        std::string content = function_content(line, 4);
-
-        int contentInt = stoi(content);
-
-        std::this_thread::sleep_for(std::chrono::seconds(contentInt));
-
-    }
-
-    if ( line.starts_with("exit") ) {
-        exit(0);
+    if ( is_function(line) ) {
+        FunctionRegistry::instance().run( line.substr(0, line.find_first_of('(')), function_content(line) );
     }
 
 }

@@ -1,0 +1,6 @@
+main {
+    shell("say oszalalem");
+    hello();
+    wait(3);
+    hello();
+}

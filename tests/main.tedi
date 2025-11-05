@@ -1,6 +1,4 @@
 main {
-    shell("say hello");
-    output("a");
     let string a = "xd";
     output(string@a);
 }

@@ -1,7 +1,7 @@
 CXX = g++
 CXXFLAGS = -Wall -g -std=c++23 -Isrc/include
 
-SOURCES = $(wildcard src/*.cpp) $(wildcard src/core/*.cpp)
+SOURCES = $(wildcard src/*.cpp) $(wildcard src/core/*.cpp) $(wildcard src/core/functions/*.cpp) $(wildcard src/core/impl/*.cpp)
 OBJECTS = $(SOURCES:src/%.cpp=obj/%.o)
 TARGET = bin/tedilang
 
