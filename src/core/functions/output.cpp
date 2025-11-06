@@ -17,8 +17,8 @@ ReturnType func_output( std::string arg ) {
     }
     else
     {
-        std::string type = arg.substr( 0, arg.find('@') );
-        std::string varName = arg.substr( arg.find('@') + 1 );
+        std::string type = arg.substr( arg.find('<') + 1, arg.find('>') - 1 );
+        std::string varName = arg.substr( arg.find('>') + 1 );
         
         if ( type == "int" )            std::cout << Variables::instance().getInt(varName) << std::endl;
         else if ( type == "string" )    std::cout << Variables::instance().getString(varName) << std::endl;
