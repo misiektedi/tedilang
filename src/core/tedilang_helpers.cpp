@@ -30,7 +30,12 @@ bool is_string(std::string x) {
     return false;
 }
 
-std::string function_content(std::string line, int name_length = 0) {
+std::string get_function_name(std::string line) {
+    size_t nameLength = line.find_first_of('(');
+
+    return line.substr(0, nameLength);
+}
+std::string get_function_args(std::string line) {
     size_t nameLength = line.find_first_of('(');
 
     return line.substr(nameLength + 1, line.length() - nameLength - 2 );

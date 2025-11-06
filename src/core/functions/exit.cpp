@@ -1,8 +1,10 @@
 #include "register_function.hpp"
+#include "registry.hpp"
+
 #include "core/tedilang_helpers.hpp"
 #include <iostream>
 
-void func_exit( std::string arg ) {
+ReturnType func_exit( std::string arg ) {
     exit(0);
 }
 

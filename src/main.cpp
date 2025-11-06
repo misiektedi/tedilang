@@ -36,7 +36,7 @@ void interpreter(std::string line) {
     }
 
     if ( is_function(line) ) {
-        FunctionRegistry::instance().run( line.substr(0, line.find_first_of('(')), function_content(line) );
+        FunctionRegistry::instance().run( get_function_name(line), get_function_args(line) );
     }
 
 }
@@ -44,10 +44,7 @@ void interpreter(std::string line) {
 int main( int argc, char* argv[] ) {
     std::ifstream file( argv[1] );
 
-    if (!file.is_open()) {
-        std::cerr << "File not exist." << std::endl;
-        return 1;
-    }
+    if (!file.is_open()) tedilang_exception("File not exist.");
 
     std::string line;
     bool main = false;
@@ -74,8 +71,7 @@ int main( int argc, char* argv[] ) {
             | std::views::reverse;
 
         std::string line(view.begin(), view.end());
-
-
+        
 
         interpreter( line );
 

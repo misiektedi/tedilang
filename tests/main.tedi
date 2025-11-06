@@ -1,4 +1,6 @@
 main {
     let string a = "xd";
     output(string@a);
+
+    output();
 }

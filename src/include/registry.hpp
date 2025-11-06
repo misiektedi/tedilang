@@ -6,10 +6,13 @@
 #include <unordered_map>
 #include <functional>
 #include <iostream>
+#include <variant>
+
+using ReturnType = std::variant<int, double, std::string, bool, std::monostate>;
 
 class FunctionRegistry {
 public:
-    using Function = std::function<void(std::string)>;
+    using Function = std::function<ReturnType(const std::string&)>;
 
     static FunctionRegistry& instance() {
         static FunctionRegistry r;
