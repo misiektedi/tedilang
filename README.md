@@ -1,3 +1,5 @@
+![tedilang logo](https://cdn.molkuski.com/projekty/tedilang.png)
+
 # Tedilang
 
 2025.11.001 (alpha)
