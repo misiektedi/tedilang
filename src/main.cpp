@@ -18,7 +18,7 @@
 void interpreter(std::string line) {
 
     if ( line.starts_with("let") ) {
-        std::array<std::string, 2> types = {"int", "std::string"};
+        std::array<std::string, 2> types = {"int", "string"};
 
         std::string lineStriped = line.substr(4);
 

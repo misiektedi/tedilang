@@ -60,8 +60,8 @@ int interpret( std::string instruction ) {
 
 int calc(std::string instruction) {
     instruction.erase(remove(instruction.begin(), instruction.end(), ' '), instruction.end());
-
-    if (instruction.find(chars) == std::string::npos) {
+    
+    if (instruction.find_first_of(chars) == std::string::npos) {
         return stoi(instruction);
     }
     
