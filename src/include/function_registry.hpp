@@ -8,7 +8,7 @@
 #include <iostream>
 #include <variant>
 
-using ReturnType = std::variant<int, double, std::string, bool, std::monostate>;
+using ReturnType = std::variant<int, double, std::string, bool, std::monostate, long>;
 
 class FunctionRegistry {
 public:

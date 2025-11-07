@@ -8,6 +8,7 @@
 #include <iostream>
 
 ReturnType func_output( std::string arg ) {
+    
     if ( is_string(arg) ) {
         std::cout << remove_qm( arg ) << std::endl;
     }

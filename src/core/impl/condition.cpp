@@ -3,54 +3,38 @@
 #include <iostream>
 #include <string>
 
-std::string condition_chars = "><";
+std::string condition_chars = "><=";
 std::string condition_numbers = "0123456789";
 
-int condition( std::string instruction ) {
-    size_t operation_pos = instruction.find_first_of(condition_chars);
-    if (operation_pos == std::string::npos) {
+bool condition( std::string instruction ) {
+    size_t condition_startPos = instruction.find_first_of(condition_chars);
+    if (condition_startPos == std::string::npos) {
+        return 0;
+    }
+    size_t condition_endPos = instruction.find_last_of(condition_chars);
+
+    size_t first_startPos = instruction.find_first_of(condition_numbers, condition_startPos);
+    if (first_startPos == std::string::npos) {
         return 0;
     }
 
-    size_t secondcondition_numberstartPos = instruction.find_first_of(condition_numbers, operation_pos);
-    if (secondcondition_numberstartPos == std::string::npos) {
-        return 0;
-    }
+    size_t second_endPos = instruction.length();
 
-    size_t secondNumberEndPos = instruction.find_first_of(condition_chars, secondcondition_numberstartPos);
-    if (secondNumberEndPos == std::string::npos) {
-        secondNumberEndPos = instruction.length();
-    }
+    std::string instructionBuffer = instruction.substr( 1, second_endPos - 2 );
 
-    std::string instructionBuffer = instruction.substr( 0, secondNumberEndPos );
+    int first         = stoi( instructionBuffer.substr(0, condition_startPos - 1) );
+    int second        = stoi( instructionBuffer.substr(condition_endPos, second_endPos) );
 
-    int firstNumber         = stoi( instructionBuffer.substr(0, operation_pos) );
-    int secondNumber        = stoi( instructionBuffer.substr(secondcondition_numberstartPos, secondNumberEndPos) );
-
-    char op = instruction[operation_pos];
-
+    std::string op = instruction.substr( condition_startPos, condition_endPos - 1 );
+    
     int result = 0;
 
-    switch ( op ) {
-        case '+':
-            result = firstNumber + secondNumber;
-            break;
+    if (op == "<") return first < second;
+    else if (op == ">") return first > second;
+    else if (op == "==") return first == second;
 
-        case '-':
-            result = firstNumber - secondNumber;
-            break;
-
-        case '*':
-            result = firstNumber * secondNumber;
-            break;
-
-        case '/':
-            result = firstNumber / secondNumber;
-            break;
-    }
-
-    if ( secondNumberEndPos != instruction.length() ) {
-        std::string instructionAfter = std::to_string( result ) + instruction.substr(secondNumberEndPos);
+    if ( second_endPos != instruction.length() ) {
+        std::string instructionAfter = std::to_string( result ) + instruction.substr(second_endPos);
     
         result = condition( instructionAfter );
     }

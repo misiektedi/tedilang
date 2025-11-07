@@ -5,9 +5,9 @@
 #include <ctime>
 
 ReturnType func_time( std::string arg ) {
-    std::time_t unix_time = std::time(nullptr);
-
-    return 1;
+    long unix_time = static_cast<long>(std::time(nullptr));
+    
+    return unix_time;
 }
 
 TEDILANG_FUNCTION("time", func_time)
