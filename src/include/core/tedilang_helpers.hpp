@@ -20,5 +20,6 @@ bool is_string(std::string x);
 
 std::string get_function_name(std::string line);
 std::string get_function_args(std::string line);
+std::string get_keyword_name(std::string line);
 
 std::string remove_qm(std::string text);

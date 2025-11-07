@@ -1,23 +1,23 @@
-#include "core/impl/calc.hpp"
+#include "core/impl/condition.hpp"
 
 #include <iostream>
 #include <string>
 
-std::string calc_chars = "+-*/";
-std::string calc_numbers = "0123456789";
+std::string condition_chars = "><";
+std::string condition_numbers = "0123456789";
 
-int interpret( std::string instruction ) {
-    size_t operation_pos = instruction.find_first_of(calc_chars);
+int condition( std::string instruction ) {
+    size_t operation_pos = instruction.find_first_of(condition_chars);
     if (operation_pos == std::string::npos) {
         return 0;
     }
 
-    size_t secondcalc_numberstartPos = instruction.find_first_of(calc_numbers, operation_pos);
-    if (secondcalc_numberstartPos == std::string::npos) {
+    size_t secondcondition_numberstartPos = instruction.find_first_of(condition_numbers, operation_pos);
+    if (secondcondition_numberstartPos == std::string::npos) {
         return 0;
     }
 
-    size_t secondNumberEndPos = instruction.find_first_of(calc_chars, secondcalc_numberstartPos);
+    size_t secondNumberEndPos = instruction.find_first_of(condition_chars, secondcondition_numberstartPos);
     if (secondNumberEndPos == std::string::npos) {
         secondNumberEndPos = instruction.length();
     }
@@ -25,7 +25,7 @@ int interpret( std::string instruction ) {
     std::string instructionBuffer = instruction.substr( 0, secondNumberEndPos );
 
     int firstNumber         = stoi( instructionBuffer.substr(0, operation_pos) );
-    int secondNumber        = stoi( instructionBuffer.substr(secondcalc_numberstartPos, secondNumberEndPos) );
+    int secondNumber        = stoi( instructionBuffer.substr(secondcondition_numberstartPos, secondNumberEndPos) );
 
     char op = instruction[operation_pos];
 
@@ -52,22 +52,22 @@ int interpret( std::string instruction ) {
     if ( secondNumberEndPos != instruction.length() ) {
         std::string instructionAfter = std::to_string( result ) + instruction.substr(secondNumberEndPos);
     
-        result = interpret( instructionAfter );
+        result = condition( instructionAfter );
     }
 
     return result;
 }
 
-int calc(std::string instruction) {
+bool get_condition(std::string instruction) {
     instruction.erase(remove(instruction.begin(), instruction.end(), ' '), instruction.end());
     
-    if (instruction.find_first_of(calc_chars) == std::string::npos) {
-        return stoi(instruction);
-    }
+    // if (instruction.find_first_of(condition_chars) == std::string::npos) {
+    //     return stoi(instruction);
+    // }
     
-    int final = 0;
+    bool final = false;
 
-    final = interpret( instruction );
+    final = condition( instruction );
 
     return final;
 }

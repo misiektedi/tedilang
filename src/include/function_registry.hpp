@@ -26,7 +26,6 @@ public:
     bool run(const std::string& name, std::string arg) {
         auto it = Functions.find(name);
         if (it == Functions.end()) {
-            tedilang_exception("Unknown function named '" + name + "'.");
             return false;
         }
         it->second(arg);

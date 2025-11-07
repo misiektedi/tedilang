@@ -40,6 +40,9 @@ std::string get_function_args(std::string line) {
 
     return line.substr(nameLength + 1, line.length() - nameLength - 2 );
 }
+std::string get_keyword_name(std::string line) {
+    return line.substr(0, line.find(' '));
+}
 
 std::string remove_qm(std::string text) {
     return text.substr(1, text.length() - 2 );

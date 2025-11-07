@@ -1,5 +1,5 @@
 #include "register_function.hpp"
-#include "registry.hpp"
+#include "function_registry.hpp"
 
 #include "core/tedilang_helpers.hpp"
 #include <iostream>

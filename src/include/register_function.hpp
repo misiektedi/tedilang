@@ -1,5 +1,5 @@
 #pragma once
-#include "registry.hpp"
+#include "function_registry.hpp"
 
 struct FunctionRegistrar {
     FunctionRegistrar(const std::string& name, FunctionRegistry::Function func) {

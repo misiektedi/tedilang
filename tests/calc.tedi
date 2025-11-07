@@ -1,5 +1,7 @@
 main {
     let int test = 1 + 3;
 
+    
+
     output(<int>test);
 }
