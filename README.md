@@ -2,7 +2,7 @@
 
 # Tedilang
 
-2025.11.001 (alpha)
+2025.11.v01 (alpha)
 
 
 To compile this project, use `make`.

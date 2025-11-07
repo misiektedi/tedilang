@@ -10,6 +10,7 @@
 #include <cctype>
 
 #include "core/tedilang_helpers.hpp"
+#include "core/tedilang_arguments.hpp"
 
 #include "function_registry.hpp"
 #include "keyword_registry.hpp"
@@ -29,6 +30,8 @@ void interpreter(std::string line) {
 }
 
 int main( int argc, char* argv[] ) {
+    if ( argv[1][0] == '-' ) tedilang_argument(argv[1]);
+
     std::ifstream file( argv[1] );
 
     if (!file.is_open()) tedilang_exception("File not exist.");
