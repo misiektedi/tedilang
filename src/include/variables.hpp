@@ -55,4 +55,8 @@ public:
     bool getBool(const std::string& key) const {
         return std::get<bool>(variables.at(key).data);
     }
+
+    bool isDeclaredVariable(const std::string& key ) const {
+        return variables.contains(key);
+    }
 };

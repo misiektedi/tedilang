@@ -1,16 +1,7 @@
 #include <iostream>
-#include <unordered_map>
 #include <fstream>
 #include <string>
-#include <cstdlib>
-#include <chrono>
-#include <thread>
-#include <array>
-#include <algorithm>
-#include <cstring>
-#include <variant>
 #include <ranges>
-#include <cctype>
 
 bool check_function(std::string line, std::string function_name) {
     if ( line.starts_with(function_name + "(") && line.ends_with(")") ) return true;
@@ -46,4 +37,20 @@ std::string get_keyword_name(std::string line) {
 
 std::string remove_qm(std::string text) {
     return text.substr(1, text.length() - 2 );
+}
+
+std::string string_trim(std::string line) {
+    line.erase(remove(line.begin(), line.end(), '\n'), line.end());
+    line.erase(remove(line.begin(), line.end(), '\t'), line.end());
+
+    auto view = line
+        | std::views::drop_while([](unsigned char ch){ return std::isspace(ch); })
+        | std::views::reverse
+        | std::views::drop_while([](unsigned char ch){ return std::isspace(ch); })
+        | std::views::reverse;
+    
+    std::string new_line(view.begin(), view.end());
+    line = new_line;
+
+    return line;
 }

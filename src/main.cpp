@@ -1,33 +1,15 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-#include <thread>
-#include <array>
-#include <algorithm>
-#include <cstring>
-#include <variant>
-#include <ranges>
-#include <cctype>
 
 #include "core/tedilang_helpers.hpp"
 #include "core/tedilang_arguments.hpp"
+#include "core/tedilang_interpreter.hpp"
 
 #include "function_registry.hpp"
 #include "keyword_registry.hpp"
 
 #include "variables.hpp"
-
-void interpreter(std::string line) {
-
-    if ( KeywordRegistry::instance().run( get_keyword_name(line), line ) ) return;
-
-    if ( is_function(line) ) {
-        if ( FunctionRegistry::instance().run( get_function_name(line), get_function_args(line) ) ) return;
-    }
-
-    tedilang_exception("Interpreter could not recognize a valid instruction.");
-
-}
 
 int main( int argc, char* argv[] ) {
     if ( argv[1][0] == '-' ) tedilang_argument(argv[1]);
@@ -37,7 +19,10 @@ int main( int argc, char* argv[] ) {
     if (!file.is_open()) tedilang_exception("File not exist.");
 
     std::string line;
+    std::string blockContent;
+
     bool main = false;
+    bool inBlock = false;
 
     while ( getline(file, line, ';') ) {
 
@@ -48,23 +33,29 @@ int main( int argc, char* argv[] ) {
 
         if ( main == false ) continue;
 
+        line = string_trim(line);
 
-        line.erase(remove(line.begin(), line.end(), '\n'), line.end());
-        line.erase(remove(line.begin(), line.end(), '\t'), line.end());
 
-        auto view = line
-            | std::views::drop_while([](unsigned char ch){ return std::isspace(ch); })
-            | std::views::reverse
-            | std::views::drop_while([](unsigned char ch){ return std::isspace(ch); })
-            | std::views::reverse;
-        
-        std::string line(view.begin(), view.end());
+        if (line.find('{') != std::string::npos) {
+            inBlock = true;
+            blockContent += line + ';';
+            continue;
+        }
+        else if (inBlock && line.find('}') == std::string::npos) {
+            blockContent += line + ';'; continue;
+        }
+        else if (inBlock && line.find('}') != std::string::npos) {
+            inBlock = false;
+            tedilang_interpreter_dispatch( blockContent );
+            continue;
+        }
+
 
         if ( line.starts_with("#") ) continue;
         if ( line == "}" ) continue;
 
 
-        interpreter( line );
+        tedilang_interpreter_dispatch( line );
 
     }
 

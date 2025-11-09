@@ -1,5 +1,7 @@
 #include "core/impl/condition.hpp"
 
+#include "core/tedilang_utils.hpp"
+
 #include <iostream>
 #include <string>
 
@@ -20,18 +22,19 @@ bool condition( std::string instruction ) {
 
     size_t second_endPos = instruction.length();
 
-    std::string instructionBuffer = instruction.substr( 1, second_endPos - 2 );
+    int first         = stoi( instruction.substr(0, condition_startPos) );
+    int second        = stoi( instruction.substr(condition_endPos + 1, second_endPos) );
 
-    int first         = stoi( instructionBuffer.substr(0, condition_startPos - 1) );
-    int second        = stoi( instructionBuffer.substr(condition_endPos, second_endPos) );
-
-    std::string op = instruction.substr( condition_startPos, condition_endPos - 1 );
+    std::string op = instruction.substr( condition_startPos, condition_endPos );
     
     int result = 0;
 
-    if (op == "<") return first < second;
-    else if (op == ">") return first > second;
-    else if (op == "==") return first == second;
+    if          (op == "<") return first < second;
+    else if     (op == ">") return first > second;
+    else if     (op == "==") return first == second;
+    else if     (op == ">=") return first >= second;
+    else if     (op == "<=") return first <= second;
+    else        tedilang_exception("Invalid operator");
 
     if ( second_endPos != instruction.length() ) {
         std::string instructionAfter = std::to_string( result ) + instruction.substr(second_endPos);
