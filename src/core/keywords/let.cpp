@@ -11,11 +11,9 @@
 ReturnType key_let( std::string arg ) {
     std::array<std::string, 2> types = {"int", "string"};
 
-    std::string lineStriped = arg.substr(4);
+    std::string type = arg.substr(0, 0 + arg.find(' ') );
 
-    std::string type = lineStriped.substr(0, 0 + lineStriped.find(' ') );
-
-    std::string content = lineStriped.substr(1 + type.length());
+    std::string content = arg.substr(1 + type.length());
 
     size_t pos = content.find('=');
 

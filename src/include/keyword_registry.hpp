@@ -20,15 +20,18 @@ public:
     }
 
     void registerFunction(const std::string& name, Keyword func) {
-        Keywords[name] = std::move(func);
+        Keywords[name + ':'] = std::move(func);
     }
 
     bool run(const std::string& name, std::string arg) {
-        auto it = Keywords.find(name);
+        auto it = Keywords.find(name + ':');
         if (it == Keywords.end()) {
             return false;
         }
-        it->second(arg);
+        
+        std::string argAfter = arg.substr( name.length() + 1 + 1 );
+
+        it->second(argAfter);
         return true;
     }
 

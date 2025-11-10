@@ -13,12 +13,10 @@
 #include <string>
 
 ReturnType key_if( std::string arg ) {
-    std::string lineStriped = arg.substr(3);
-
     std::string content = arg.substr( arg.find('{') + 1 );
     content = string_trim(content);
 
-    std::string condition = lineStriped.substr( 0, lineStriped.find('{') - 1 );
+    std::string condition = arg.substr( 0, arg.find('{') - 1 );
 
     if ( get_condition(condition) ) {
         std::stringstream ss(content);
