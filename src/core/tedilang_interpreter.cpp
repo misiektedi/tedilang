@@ -9,7 +9,7 @@
 #include "keyword_registry.hpp"
 
 void tedilang_interpreter_dispatch( std::string line ) {
-    std::cout << get_keyword_name(line) << std::endl;
+    
     if ( KeywordRegistry::instance().run( get_keyword_name(line), line ) ) return;
 
     if ( is_function(line) ) {

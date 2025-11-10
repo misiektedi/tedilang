@@ -20,9 +20,8 @@ int main( int argc, char* argv[] ) {
 
     std::string line;
     std::string blockContent;
-
     bool main = false;
-    bool inBlock = false;
+    int blockCount = 0;
 
     while ( getline(file, line, ';') ) {
 
@@ -37,16 +36,23 @@ int main( int argc, char* argv[] ) {
 
 
         if (line.find('{') != std::string::npos) {
-            inBlock = true;
+            int bracketCount = std::count(line.begin(), line.end(), '{');
+            blockCount += bracketCount;
+
             blockContent += line + ';';
+
             continue;
         }
-        else if (inBlock && line.find('}') == std::string::npos) {
+        else if (blockCount > 0 && line.find('}') == std::string::npos) {
             blockContent += line + ';'; continue;
         }
-        else if (inBlock && line.find('}') != std::string::npos) {
-            inBlock = false;
-            tedilang_interpreter_dispatch( blockContent );
+        else if (blockCount > 0 && line.find('}') != std::string::npos) {
+            blockCount--;
+
+            if (blockCount == 0) {
+                tedilang_interpreter_dispatch( blockContent );
+            };
+
             continue;
         }
 
