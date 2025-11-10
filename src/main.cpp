@@ -51,6 +51,7 @@ int main( int argc, char* argv[] ) {
 
             if (blockCount == 0) {
                 tedilang_interpreter_dispatch( blockContent );
+                blockContent = "";
             };
 
             continue;

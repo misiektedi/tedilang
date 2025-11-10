@@ -6,4 +6,8 @@ main {
         output("bb");
         output("hhh");
     };
+
+    if: 3 == 3 {
+        output("ccc");
+    };
 }
