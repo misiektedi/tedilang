@@ -35,27 +35,29 @@ int main( int argc, char* argv[] ) {
         line = string_trim(line);
 
 
-        if (line.find('{') != std::string::npos) {
+
+
+        if ( line.find('{') != std::string::npos || line.find('}') != std::string::npos ) {
             int bracketCount = std::count(line.begin(), line.end(), '{');
             blockCount += bracketCount;
 
-            blockContent += line + ';';
+            bracketCount = std::count(line.begin(), line.end(), '}');
+            blockCount -= bracketCount;
 
-            continue;
-        }
-        else if (blockCount > 0 && line.find('}') == std::string::npos) {
-            blockContent += line + ';'; continue;
-        }
-        else if (blockCount > 0 && line.find('}') != std::string::npos) {
-            blockCount--;
+            blockContent += line;
+            if (!line.ends_with('}')) {
+                blockContent += ';';
+            }
 
-            if (blockCount == 0) {
+            if (blockCount == 0 && line == "}") {
                 tedilang_interpreter_dispatch( blockContent );
                 blockContent = "";
             };
 
             continue;
         }
+
+
 
 
         if ( line.starts_with("#") ) continue;

@@ -1,13 +1,13 @@
 main {
-    if: 3 == 3 {
-        if: 1 == 1 {
-            output("aa");
-        };
-        output("bb");
-        output("hhh");
+    if: 5 <= 4 {
+        output("123");
+    } else {
+        output("456");
     };
 
-    if: 3 == 3 {
-        output("ccc");
+    if: 3 <= 4 {
+        output("123");
+    } else {
+        output("456");
     };
 }
