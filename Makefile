@@ -1,5 +1,7 @@
+BUILD := $(shell cat build_number.txt | tr -d '[:space:]')
+
 CXX = g++
-CXXFLAGS = -Wall -g -std=c++23 -Isrc/include
+CXXFLAGS = -Wall -g -std=c++23 -Isrc/include -DTEDILANG_BUILD_NUMBER=$(BUILD)
 
 SOURCES = $(wildcard src/*.cpp) $(wildcard src/core/*.cpp) $(wildcard src/core/functions/*.cpp) $(wildcard src/core/impl/*.cpp) $(wildcard src/core/keywords/*.cpp)
 OBJECTS = $(SOURCES:src/%.cpp=obj/%.o)
@@ -7,6 +9,7 @@ TARGET = bin/tedilang
 
 all: $(TARGET)
 	$(MAKE) clean
+	$(shell echo $$(( $(BUILD) + 1 )) > build_number.txt)
 
 $(TARGET): $(OBJECTS)
 	mkdir -p bin
