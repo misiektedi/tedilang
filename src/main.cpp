@@ -12,7 +12,9 @@
 #include "variables.hpp"
 
 int main( int argc, char* argv[] ) {
-    if ( argv[1][0] == '-' ) tedilang_argument(argv[1]);
+    if ( argc == 1 ) tedilang_exception("Specify file or argument.");
+    
+    if ( argv[1] && argv[1][0] == '-' ) tedilang_argument(argv[1]);
 
     std::ifstream file( argv[1] );
 
