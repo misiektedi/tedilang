@@ -1,5 +1,7 @@
 main {
-    if: 5 <= 4 {
+    let: int x = 3;
+
+    if: 4 <= x {
         output("123");
     } else {
         output("456");

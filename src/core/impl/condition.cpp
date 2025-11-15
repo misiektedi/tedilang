@@ -2,6 +2,8 @@
 
 #include "core/tedilang_utils.hpp"
 
+#include "variables.hpp"
+
 #include <iostream>
 #include <string>
 
@@ -22,8 +24,23 @@ bool condition( std::string instruction ) {
 
     size_t second_endPos = instruction.length();
 
-    int first         = stoi( instruction.substr(0, condition_startPos) );
-    int second        = stoi( instruction.substr(condition_endPos + 1, second_endPos) );
+    std::string firstStr      = instruction.substr(0, condition_startPos);
+    std::string secondStr     = instruction.substr(condition_endPos + 1, second_endPos);
+
+    int first;
+    int second;
+
+    if ( Variables::instance().isDeclaredVariable(firstStr) ) {
+        first                 = Variables::instance().getInt(firstStr);
+    } else {
+        first                 = stoi( firstStr );
+    }
+
+    if ( Variables::instance().isDeclaredVariable(secondStr) ) {
+        second                = Variables::instance().getInt(secondStr);
+    } else {
+        second                = stoi( secondStr );
+    }
 
     std::string op = instruction.substr( condition_startPos, condition_endPos );
     
