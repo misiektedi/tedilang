@@ -6,7 +6,6 @@
 #include <string>
 
 std::string calc_chars = "+-*/";
-std::string calc_numbers = "0123456789";
 
 int interpret( std::string instruction ) {
     size_t operation_pos = instruction.find_first_of(calc_chars);
@@ -14,34 +13,34 @@ int interpret( std::string instruction ) {
         return 0;
     }
 
-    size_t secondNumberStartPos = instruction.find_first_of(calc_chars) + 1;
-    if (secondNumberStartPos == std::string::npos) {
+    size_t secondStartPos = instruction.find_first_of(calc_chars) + 1;
+    if (secondStartPos == std::string::npos) {
         return 0;
     }
 
-    size_t secondNumberEndPos = instruction.find_first_of(calc_chars, secondNumberStartPos);
-    if (secondNumberEndPos == std::string::npos) {
-        secondNumberEndPos = instruction.length();
+    size_t secondEndPos = instruction.find_first_of(calc_chars, secondStartPos);
+    if (secondEndPos == std::string::npos) {
+        secondEndPos = instruction.length();
     }
 
-    std::string instructionBuffer   = instruction.substr( 0, secondNumberEndPos );
+    std::string instructionBuffer   = instruction.substr( 0, secondEndPos );
 
-    std::string firstNumberStr      = instructionBuffer.substr(0, operation_pos);
-    std::string secondNumberStr     = instructionBuffer.substr(operation_pos + 1, secondNumberEndPos);
+    std::string firstStr      = instructionBuffer.substr(0, operation_pos);
+    std::string secondStr     = instructionBuffer.substr(operation_pos + 1, secondEndPos);
 
-    int firstNumber;
-    int secondNumber;
+    int first;
+    int second;
 
-    if ( Variables::instance().isDeclaredVariable(firstNumberStr) ) {
-        firstNumber                 = Variables::instance().getInt(firstNumberStr);
+    if ( Variables::instance().isDeclaredVariable(firstStr) ) {
+        first                 = Variables::instance().getInt(firstStr);
     } else {
-        firstNumber                 = stoi( firstNumberStr );
+        first                 = stoi( firstStr );
     }
 
-    if ( Variables::instance().isDeclaredVariable(secondNumberStr) ) {
-        secondNumber                = Variables::instance().getInt(secondNumberStr);
+    if ( Variables::instance().isDeclaredVariable(secondStr) ) {
+        second                = Variables::instance().getInt(secondStr);
     } else {
-        secondNumber                = stoi( secondNumberStr );
+        second                = stoi( secondStr );
     }
 
     char op = instruction[operation_pos];
@@ -50,24 +49,24 @@ int interpret( std::string instruction ) {
 
     switch ( op ) {
         case '+':
-            result = firstNumber + secondNumber;
+            result = first + second;
             break;
 
         case '-':
-            result = firstNumber - secondNumber;
+            result = first - second;
             break;
 
         case '*':
-            result = firstNumber * secondNumber;
+            result = first * second;
             break;
 
         case '/':
-            result = firstNumber / secondNumber;
+            result = first / second;
             break;
     }
 
-    if ( secondNumberEndPos != instruction.length() ) {
-        std::string instructionAfter = std::to_string( result ) + instruction.substr(secondNumberEndPos);
+    if ( secondEndPos != instruction.length() ) {
+        std::string instructionAfter = std::to_string( result ) + instruction.substr(secondEndPos);
     
         result = interpret( instructionAfter );
     }
