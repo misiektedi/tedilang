@@ -1,5 +1,6 @@
 #include "register_keyword.hpp"
 #include "keyword_registry.hpp"
+#include "function_registry.hpp"
 
 #include "core/impl/calc.hpp"
 #include "core/tedilang_helpers.hpp"
@@ -19,6 +20,11 @@ ReturnType key_let( std::string arg ) {
 
     std::string key = content.substr(0, -1 + pos);
     std::string value = content.substr(pos + 2);
+
+    if ( is_function( value ) ) {
+        FunctionRegistry::instance().run( get_function_name(value), get_function_args(value) );
+        value = std::get<std::string>(FunctionRegistry::instance().result);
+    }
     
     if ( type == "int" ) Variables::instance().setInt( key, calc(value) );
     else if ( type == "string" ) Variables::instance().setString( key, remove_qm(value) );

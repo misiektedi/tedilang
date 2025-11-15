@@ -14,6 +14,8 @@ class KeywordRegistry {
 public:
     using Keyword = std::function<ReturnType(const std::string&)>;
 
+    ReturnType result;
+
     static KeywordRegistry& instance() {
         static KeywordRegistry r;
         return r;
@@ -31,7 +33,7 @@ public:
         
         std::string argAfter = arg.substr( name.length() + 1 + 1 );
 
-        it->second(argAfter);
+        result = it->second(argAfter);
         return true;
     }
 

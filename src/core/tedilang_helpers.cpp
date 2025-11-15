@@ -35,8 +35,12 @@ std::string get_keyword_name(std::string line) {
     return line.substr(0, line.find(':'));
 }
 
-std::string remove_qm(std::string text) {
-    return text.substr(1, text.length() - 2 );
+std::string remove_qm(std::string x) {
+    if ( x.starts_with('"') && x.ends_with('"') ) {
+        return x.substr(1, x.length() - 2 );
+    } else {
+        return x;
+    }
 }
 
 std::string string_trim(std::string line) {

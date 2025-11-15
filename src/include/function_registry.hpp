@@ -14,6 +14,8 @@ class FunctionRegistry {
 public:
     using Function = std::function<ReturnType(const std::string&)>;
 
+    ReturnType result;
+
     static FunctionRegistry& instance() {
         static FunctionRegistry r;
         return r;
@@ -28,7 +30,9 @@ public:
         if (it == Functions.end()) {
             return false;
         }
-        it->second(arg);
+
+        result = it->second(arg);
+
         return true;
     }
 
