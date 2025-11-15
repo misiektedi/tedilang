@@ -5,8 +5,8 @@
 #include <chrono>
 #include <thread>
 
-ReturnType func_wait( std::string arg ) {
-    int contentInt = stoi(arg);
+ReturnType func_wait( std::vector<std::string> arg ) {
+    int contentInt = stoi(arg[0]);
 
     std::this_thread::sleep_for(std::chrono::seconds(contentInt));
 

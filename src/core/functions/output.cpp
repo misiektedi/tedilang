@@ -7,24 +7,26 @@
 
 #include <iostream>
 
-ReturnType func_output( std::string arg ) {
+ReturnType func_output( std::vector<std::string> arg ) {
+
+    std::string str = arg[0];
     
-    if ( is_string(arg) ) {
-        std::cout << remove_qm( arg ) << std::endl;
+    if ( is_string(str) ) {
+        std::cout << remove_qm( str ) << std::endl;
     }
-    else if ( is_function(arg) )
+    else if ( is_function(str) )
     {
-        std::cout << FunctionRegistry::instance().run( get_function_name(arg), get_function_args(arg) ) << std::endl;
+        std::cout << FunctionRegistry::instance().run( get_function_name(str), get_function_args(str) ) << std::endl;
     }
-    else if ( Variables::instance().isDeclaredVariable(arg) )
+    else if ( Variables::instance().isDeclaredVariable(str) )
     {
-        switch (Variables::instance().getVarType(arg)) {
+        switch (Variables::instance().getVarType(str)) {
             case Variables::Type::INT:
-                std::cout << Variables::instance().getInt(arg) << std::endl;
+                std::cout << Variables::instance().getInt(str) << std::endl;
                 break;
 
             case Variables::Type::STRING:
-                std::cout << Variables::instance().getString(arg) << std::endl;
+                std::cout << Variables::instance().getString(str) << std::endl;
                 break;
 
             default:

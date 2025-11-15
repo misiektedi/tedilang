@@ -7,12 +7,13 @@
 #include <functional>
 #include <iostream>
 #include <variant>
+#include <vector>
 
 using ReturnType = std::variant<int, double, std::string, bool, std::monostate, long>;
 
 class FunctionRegistry {
 public:
-    using Function = std::function<ReturnType(const std::string&)>;
+    using Function = std::function<ReturnType(const std::vector<std::string>&)>;
 
     ReturnType result;
 
@@ -31,7 +32,21 @@ public:
             return false;
         }
 
-        result = it->second(arg);
+        std::vector<std::string> args;
+        std::string buf = "";
+
+        for (char c : arg) {
+            if (c == ',') {
+                args.push_back(buf);
+                buf.clear();
+            } else {
+                buf += c;
+            }
+        }
+
+        args.push_back(buf);
+
+        result = it->second(args);
 
         return true;
     }

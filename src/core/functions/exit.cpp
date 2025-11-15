@@ -4,7 +4,7 @@
 #include "core/tedilang_helpers.hpp"
 #include <iostream>
 
-ReturnType func_exit( std::string arg ) {
+ReturnType func_exit( std::vector<std::string> arg ) {
     exit(0);
 }
 

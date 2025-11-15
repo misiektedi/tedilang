@@ -7,9 +7,12 @@
 
 #include <iostream>
 
-ReturnType func_input( std::string arg ) {
-    if ( is_string(arg) ) {
-        FunctionRegistry::instance().run( "output", arg );
+ReturnType func_input( std::vector<std::string> arg ) {
+
+    std::string str = arg[0];
+
+    if ( is_string(str) ) {
+        FunctionRegistry::instance().run( "output", str );
     }
 
     std::string x;
