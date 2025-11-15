@@ -1,9 +1,7 @@
 main {
-    let: string name = input("Hello, what's your name?");
-    output(name);
+    let: int x = 5 + 5 + 5;
+    let: int y = x - 5;
+    let: int z = 5 + y;
 
-    let: int x = 5;
-    let: int y = 5 + x;
-
-    output(y);
+    output(z);
 }

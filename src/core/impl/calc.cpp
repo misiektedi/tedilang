@@ -1,5 +1,7 @@
 #include "core/impl/calc.hpp"
 
+#include "variables.hpp"
+
 #include <iostream>
 #include <string>
 
@@ -12,20 +14,35 @@ int interpret( std::string instruction ) {
         return 0;
     }
 
-    size_t secondcalc_numberstartPos = instruction.find_first_of(calc_numbers, operation_pos);
-    if (secondcalc_numberstartPos == std::string::npos) {
+    size_t secondNumberStartPos = instruction.find_first_of(calc_chars) + 1;
+    if (secondNumberStartPos == std::string::npos) {
         return 0;
     }
 
-    size_t secondNumberEndPos = instruction.find_first_of(calc_chars, secondcalc_numberstartPos);
+    size_t secondNumberEndPos = instruction.find_first_of(calc_chars, secondNumberStartPos);
     if (secondNumberEndPos == std::string::npos) {
         secondNumberEndPos = instruction.length();
     }
 
-    std::string instructionBuffer = instruction.substr( 0, secondNumberEndPos );
+    std::string instructionBuffer   = instruction.substr( 0, secondNumberEndPos );
 
-    int firstNumber         = stoi( instructionBuffer.substr(0, operation_pos) );
-    int secondNumber        = stoi( instructionBuffer.substr(secondcalc_numberstartPos, secondNumberEndPos) );
+    std::string firstNumberStr      = instructionBuffer.substr(0, operation_pos);
+    std::string secondNumberStr     = instructionBuffer.substr(operation_pos + 1, secondNumberEndPos);
+
+    int firstNumber;
+    int secondNumber;
+
+    if ( Variables::instance().isDeclaredVariable(firstNumberStr) ) {
+        firstNumber                 = Variables::instance().getInt(firstNumberStr);
+    } else {
+        firstNumber                 = stoi( firstNumberStr );
+    }
+
+    if ( Variables::instance().isDeclaredVariable(secondNumberStr) ) {
+        secondNumber                = Variables::instance().getInt(secondNumberStr);
+    } else {
+        secondNumber                = stoi( secondNumberStr );
+    }
 
     char op = instruction[operation_pos];
 
