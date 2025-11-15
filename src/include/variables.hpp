@@ -24,6 +24,9 @@ public:
         return r;
     }
 
+    Type getType() const { return type; }
+    Type getVarType(const std::string& key) const { return variables.at(key).type; }
+
     Variables() : type(Type::INT), data(0) {}
     Variables(int v) : type(Type::INT), data(v) {}
     Variables(double v) : type(Type::DOUBLE), data(v) {}

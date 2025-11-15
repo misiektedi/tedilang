@@ -16,14 +16,25 @@ ReturnType func_output( std::string arg ) {
     {
         std::cout << FunctionRegistry::instance().run( get_function_name(arg), get_function_args(arg) ) << std::endl;
     }
+    else if ( Variables::instance().isDeclaredVariable(arg) )
+    {
+        switch (Variables::instance().getVarType(arg)) {
+            case Variables::Type::INT:
+                std::cout << Variables::instance().getInt(arg) << std::endl;
+                break;
+
+            case Variables::Type::STRING:
+                std::cout << Variables::instance().getString(arg) << std::endl;
+                break;
+
+            default:
+                tedilang_exception("Nothing to output.");
+                break;
+        }
+    }
     else
     {
-        std::string type = arg.substr( arg.find('<') + 1, arg.find('>') - 1 );
-        std::string varName = arg.substr( arg.find('>') + 1 );
-        
-        if ( type == "int" )            std::cout << Variables::instance().getInt(varName) << std::endl;
-        else if ( type == "string" )    std::cout << Variables::instance().getString(varName) << std::endl;
-        else tedilang_exception("Nothing to output.");
+        tedilang_exception("Invalid output() usage.");
     }
 
     return 0;

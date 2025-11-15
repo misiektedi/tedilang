@@ -1,0 +1,5 @@
+main {
+    let: string x = "hello";
+    
+    output(x);
+}
