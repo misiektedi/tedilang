@@ -1,0 +1,7 @@
+main {
+    let: string x = "aa";
+
+    x = input("aa");
+
+    output(x);
+}
