@@ -8,19 +8,19 @@
 #include <string>
 
 std::string condition_chars = "><=";
-std::string condition_numbers = "0123456789";
 
 bool condition( std::string instruction ) {
     size_t condition_startPos = instruction.find_first_of(condition_chars);
+    size_t conditionLength;
     if (condition_startPos == std::string::npos) {
         return 0;
     }
-    size_t condition_endPos = instruction.find_last_of(condition_chars);
-
-    size_t first_startPos = instruction.find_first_of(condition_numbers, condition_startPos);
-    if (first_startPos == std::string::npos) {
-        return 0;
+    if ( condition_chars.find( instruction.substr(condition_startPos)[1] ) != std::string::npos ) {
+        conditionLength = 2;
+    } else {
+        conditionLength = 1;
     }
+    size_t condition_endPos = instruction.find_last_of(condition_chars);
 
     size_t second_endPos = instruction.length();
 
@@ -42,7 +42,7 @@ bool condition( std::string instruction ) {
         second                = stoi( secondStr );
     }
 
-    std::string op = instruction.substr( condition_startPos, condition_endPos );
+    std::string op = instruction.substr( condition_startPos, conditionLength );
     
     int result = 0;
 
@@ -64,10 +64,6 @@ bool condition( std::string instruction ) {
 
 bool get_condition(std::string instruction) {
     instruction.erase(remove(instruction.begin(), instruction.end(), ' '), instruction.end());
-    
-    // if (instruction.find_first_of(condition_chars) == std::string::npos) {
-    //     return stoi(instruction);
-    // }
     
     bool final = false;
 
