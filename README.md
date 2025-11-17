@@ -1,9 +1,25 @@
 ![tedilang logo](https://cdn.molkuski.com/projekty/tedilang.png)
 
-# Tedilang
+# Tedilang 1.0 (alpha)
+tedilang is a general-purpose interpreted scripting language written in C++. It's still in the early stages of development.
 
-2025.11.v01 (alpha)
+**Code example**
+```tedilang
+main {
+    output("Welcome to tedilang!");
+}
+```
 
+# Installation
+To install latest version of tedilang you must copy and paste command to your terminal from below:
+```sh
+sudo curl -s https://raw.githubusercontent.com/misiektedi/tedilang/main/install.sh | sh
+```
+
+Or you can use `install.sh` script located in main directory of repository.
+### This language is currently supported only on **macOS** and **Linux/Unix**.
+
+---
 
 To compile this project, use `make`.
   
