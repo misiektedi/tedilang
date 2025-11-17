@@ -39,7 +39,7 @@ int main( int argc, char* argv[] ) {
 
 
 
-        if ( line.find('{') != std::string::npos || line.find('}') != std::string::npos ) {
+        if ( line.find('{') != std::string::npos || line.find('}') != std::string::npos || blockCount > 0 ) {
             int bracketCount = std::count(line.begin(), line.end(), '{');
             blockCount += bracketCount;
 
