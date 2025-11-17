@@ -9,35 +9,57 @@
 
 ReturnType func_output( std::vector<std::string> arg ) {
 
-    std::string str = arg[0];
-    
-    if ( is_string(str) ) {
-        std::cout << remove_qm( str ) << std::endl;
-    }
-    else if ( is_function(str) )
-    {
-        std::cout << FunctionRegistry::instance().run( get_function_name(str), get_function_args(str) ) << std::endl;
-    }
-    else if ( Variables::instance().isDeclaredVariable(str) )
-    {
-        switch (Variables::instance().getVarType(str)) {
-            case Variables::Type::INT:
-                std::cout << Variables::instance().getInt(str) << std::endl;
-                break;
+    std::string argStr = arg[0];
 
-            case Variables::Type::STRING:
-                std::cout << Variables::instance().getString(str) << std::endl;
-                break;
+    std::vector<std::string> args;
+    std::string buf = "";
 
-            default:
-                tedilang_exception("Nothing to output.");
-                break;
+    for (char c : argStr) {
+        if (c == '~') {
+            args.push_back(buf);
+            buf.clear();
+        } else {
+            buf += c;
         }
     }
-    else
-    {
-        tedilang_exception("Invalid output() usage.");
+
+    args.push_back(buf);
+    
+    for (std::string str : args) {
+
+        str = string_trim(str);
+
+        if ( is_string(str) ) {
+            std::cout << remove_qm( str );
+        }
+        else if ( is_function(str) )
+        {
+            std::cout << FunctionRegistry::instance().run( get_function_name(str), get_function_args(str) );
+        }
+        else if ( Variables::instance().isDeclaredVariable(str) )
+        {
+            switch (Variables::instance().getVarType(str)) {
+                case Variables::Type::INT:
+                    std::cout << Variables::instance().getInt(str);
+                    break;
+
+                case Variables::Type::STRING:
+                    std::cout << Variables::instance().getString(str);
+                    break;
+
+                default:
+                    tedilang_exception("Nothing to output.");
+                    break;
+            }
+        }
+        else
+        {
+            tedilang_exception("Invalid output() usage.");
+        }
+
     }
+
+    std::cout << std::endl;
 
     return 0;
 }
