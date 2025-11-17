@@ -23,9 +23,9 @@ printf "\e[36m→ Press Enter to install..\n\e[0m"
 printf "\e[31m→ Press [R] to uninstall..\n\e[0m"
 read
 
-curl -s https://raw.githubusercontent.com/misiektedi/tedilang/main/bin/tedilang -o /tmp/tedilang
-mv /tmp/tedilang $TEDILANG_INSTALL_PATH
-chmod +x $TEDILANG_INSTALL_PATH
+sudo curl -s https://raw.githubusercontent.com/misiektedi/tedilang/main/bin/tedilang -o /tmp/tedilang
+sudo mv /tmp/tedilang $TEDILANG_INSTALL_PATH
+sudo chmod +x $TEDILANG_INSTALL_PATH
 
 echo "tedilang successfully installed! Press Enter to continue..."
 read
