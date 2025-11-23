@@ -1,7 +1,5 @@
 main {
-    let: int test = 1 + 3;
+    let: int x = 5 % 2;
 
-    
-
-    output(<int>test);
+    output(x);
 }

@@ -5,7 +5,7 @@
 #include <iostream>
 #include <string>
 
-std::string calc_chars = "+-*/";
+std::string calc_chars = "+-*/%";
 
 int interpret( std::string instruction ) {
     size_t operation_pos = instruction.find_first_of(calc_chars);
@@ -62,6 +62,10 @@ int interpret( std::string instruction ) {
 
         case '/':
             result = first / second;
+            break;
+
+        case '%':
+            result = first % second;
             break;
     }
 
