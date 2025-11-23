@@ -2,6 +2,7 @@
 #include <fstream>
 #include <string>
 
+#include "core/tedilang_parser.hpp"
 #include "core/tedilang_helpers.hpp"
 #include "core/tedilang_arguments.hpp"
 #include "core/tedilang_interpreter.hpp"
@@ -20,55 +21,7 @@ int main( int argc, char* argv[] ) {
 
     if (!file.is_open()) tedilang_exception("File not exist.");
 
-    std::string line;
-    std::string blockContent;
-    bool main = false;
-    int blockCount = 0;
-
-    while ( getline(file, line, ';') ) {
-
-        if ( line.starts_with("main {") ) {
-            main = true;
-            line = line.substr(6);
-        }
-
-        if ( main == false ) continue;
-
-        line = string_trim(line);
-
-
-
-
-        if ( line.find('{') != std::string::npos || line.find('}') != std::string::npos || blockCount > 0 ) {
-            int bracketCount = std::count(line.begin(), line.end(), '{');
-            blockCount += bracketCount;
-
-            bracketCount = std::count(line.begin(), line.end(), '}');
-            blockCount -= bracketCount;
-
-            blockContent += line;
-            if (!line.ends_with('}')) {
-                blockContent += ';';
-            }
-
-            if (blockCount == 0 && line == "}") {
-                tedilang_interpreter_dispatch( blockContent );
-                blockContent = "";
-            };
-
-            continue;
-        }
-
-
-
-
-        if ( line.starts_with("#") ) continue;
-        if ( line == "}" ) continue;
-
-
-        tedilang_interpreter_dispatch( line );
-
-    }
+    tedilang_parser(file);
 
     file.close();
     return 0;

@@ -37,7 +37,6 @@ void tedilang_variables_handler( std::string x ) {
 }
 
 void tedilang_interpreter_dispatch( std::string line ) {
-    
     if ( KeywordRegistry::instance().run( get_keyword_name(line), line ) ) return;
 
     if ( is_function(line) ) {
@@ -47,5 +46,4 @@ void tedilang_interpreter_dispatch( std::string line ) {
     if ( Variables::instance().isDeclaredVariable( line.substr( 0, line.find(' ') ) ) ) tedilang_variables_handler(line); return;
 
     tedilang_exception("Interpreter could not recognize a valid instruction.");
-
 }

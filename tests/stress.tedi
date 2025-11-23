@@ -1,20 +1,19 @@
 main {
-    let: int counter = 1;
+    let: int counter = 0;
     let: int sum = 0;
     let: string name = "tester";
 
     output("Starting stress test...");
 
-    while: counter < 100 {
-        counter = counter + 1;
-        sum = sum + counter;
 
-        if: counter < 10 {
-            output("Counter is small: " ~ counter);
+    while: counter <= 10 {
+        if: counter < 5 {
+            output("Counter is small: " ~ counter)
         } else {
-            output("Counter is " ~ counter);
+            output("Counter is big: " ~ counter);
         };
 
+        counter = counter + 1;
     };
 
     exit();

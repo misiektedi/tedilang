@@ -28,7 +28,10 @@ ReturnType key_if( std::string arg ) {
         while (std::getline(ss, contentLine, ';')) {
             tedilang_interpreter_dispatch(contentLine);
         }
-    } else {
+    }
+    else {
+        if ( arg.find("else") == std::string::npos ) return std::monostate{};
+
         std::string content = arg.substr(
             arg.find("else") + arg.substr(arg.find("else")).find('{')
         );
