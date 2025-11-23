@@ -2,6 +2,7 @@
 #include <fstream>
 #include <string>
 
+#include "core/tedilang_utils.hpp"
 #include "core/tedilang_helpers.hpp"
 #include "core/tedilang_arguments.hpp"
 #include "core/tedilang_interpreter.hpp"
@@ -11,12 +12,19 @@
 
 #include "variables.hpp"
 
-void tedilang_parser( std::istream& stream, bool main = false ) {
+void tedilang_parser( std::istream& stream, bool main ) {
     std::string line;
     std::string blockContent;
     int blockCount = 0;
 
     while ( std::getline(stream, line, ';') ) {
+        line = string_trim(line);
+
+        if ( line.starts_with("include") ) {
+            KeywordRegistry::instance().run( get_keyword_name(line), line );
+            continue;
+        }
+
         if ( line.starts_with("main {") ) {
             main = true;
             line = line.substr(6);

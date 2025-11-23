@@ -1,7 +1,10 @@
+#pragma once
+
 #include <iostream>
 #include <fstream>
 #include <string>
 
+#include "core/tedilang_utils.hpp"
 #include "core/tedilang_helpers.hpp"
 #include "core/tedilang_arguments.hpp"
 #include "core/tedilang_interpreter.hpp"

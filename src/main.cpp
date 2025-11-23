@@ -1,28 +1,32 @@
 #include <iostream>
-#include <fstream>
 #include <string>
 
-#include "core/tedilang_parser.hpp"
-#include "core/tedilang_helpers.hpp"
 #include "core/tedilang_arguments.hpp"
-#include "core/tedilang_interpreter.hpp"
-
-#include "function_registry.hpp"
-#include "keyword_registry.hpp"
-
-#include "variables.hpp"
+#include "core/tedilang_utils.hpp"
+#include "runtime.hpp"
 
 int main( int argc, char* argv[] ) {
+    /**
+     * Checks if file is specified
+     */
     if ( argc == 1 ) tedilang_exception("Specify file or argument.");
     
-    if ( argv[1] && argv[1][0] == '-' ) tedilang_argument(argv[1]);
+    /**
+     * Executes special arguments (-v)
+     */
+    if ( argv[1] && argv[1][0] == '-' ) tedilang_argument( argv[1] );
 
-    std::ifstream file( argv[1] );
+    /**
+     * Adds config to runtime
+     */
+    std::string entryFilePath = argv[1];
+    Runtime::instance().addConfig( "entryFilePath", entryFilePath );
+    Runtime::instance().addConfig( "basePath", entryFilePath.substr(0, entryFilePath.find_last_of('/')) );
 
-    if (!file.is_open()) tedilang_exception("File not exist.");
+    /**
+     * Sends file path to handler
+     */
+    tedilang_handle_file( argv[1] );
 
-    tedilang_parser(file);
-
-    file.close();
     return 0;
 }
