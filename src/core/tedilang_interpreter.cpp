@@ -43,7 +43,10 @@ void tedilang_interpreter_dispatch( std::string line ) {
         if ( FunctionRegistry::instance().run( get_function_name(line), get_function_args(line) ) ) return;
     }
 
-    if ( Variables::instance().isDeclaredVariable( line.substr( 0, line.find(' ') ) ) ) tedilang_variables_handler(line); return;
+    if ( Variables::instance().isDeclaredVariable( line.substr( 0, line.find(' ') ) ) ) {
+        tedilang_variables_handler(line);
+        return;
+    }
 
-    tedilang_exception("Interpreter could not recognize a valid instruction.");
+    tedilang_exception("Interpreter could not recognize a valid instruction.", line);
 }
