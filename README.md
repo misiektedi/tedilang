@@ -17,7 +17,7 @@ sudo curl -s https://raw.githubusercontent.com/misiektedi/tedilang/main/install.
 ```
 
 Or you can use `install.sh` script located in main directory of repository.
-### This language is currently supported only on **macOS** and **Linux/Unix**.
+### This language is currently supported only on POSIX-compliant operating systems (macOS, Linux, FreeBSD etc.)
 
 ---
 
